@@ -1,0 +1,6 @@
+framework module Pods_playingWithMaterial {
+  umbrella header "Pods-playingWithMaterial-umbrella.h"
+
+  export *
+  module * { export * }
+}

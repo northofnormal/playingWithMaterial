@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/Material/Sources/CardView.swift"
+            timestampString = "476378080.267593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "CardView"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Material.CardView.init (Material.CardView.Type)(coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;Material.CardView&gt;"
+                  moduleName = "Material"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Anne/Development/LearningStuff/Material/PWM/playingWithMaterial/Pods/Material/Sources/CardView.swift"
+                  timestampString = "476378626.950477"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
+                  offsetFromSymbolStart = "646">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Material.CardView.init (Material.CardView.Type)(frame : __C.CGRect) -&gt; Material.CardView"
+                  moduleName = "Material"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Anne/Development/LearningStuff/Material/PWM/playingWithMaterial/Pods/Material/Sources/CardView.swift"
+                  timestampString = "476378626.950613"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
+                  offsetFromSymbolStart = "715">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
