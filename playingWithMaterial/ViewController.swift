@@ -20,6 +20,14 @@ class ViewController: UIViewController {
     var tempStringF: String?
     var windMPH:Int?
     
+    // conditions constants 
+    let iceSkatingRange: [Int] = Array(20...40)
+    let coatMaximum: Int = 40
+    let scarfAndGlovesMaximum: Int = 35
+    let hatMaximum:Int = 20
+    let kayakMinimum: Int = 75
+    let bikeRange: [Int] = Array(70...85)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,14 +37,14 @@ class ViewController: UIViewController {
     
     func makeSomeCards() {
         let cardview = createCardView()
-        let navBarView = createNavBar()
         
+        let navBarView = createNavBar()
         view.addSubview(navBarView)
         navBarView.translatesAutoresizingMaskIntoConstraints = false
         MaterialLayout.alignFromTop(view, child: navBarView)
         MaterialLayout.alignToParentHorizontally(view, child: navBarView)
         MaterialLayout.height(view, child: navBarView, height: 70)
-        
+
         
         view.addSubview(cardview)
         cardview.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +75,7 @@ class ViewController: UIViewController {
                         self.tempStringF = "\(tempF)"
                     }
                     
-                    if let windMPH = currentObservationDictionary?["temp_f"] as? Int {
+                    if let windMPH = currentObservationDictionary?["wind_gust_mph"] as? Int {
                         print("wind speed: \(windMPH)")
                         self.windMPH = windMPH
                     }
@@ -101,16 +109,66 @@ class ViewController: UIViewController {
         detailLabel.numberOfLines = 0
         cardView.detailLabel = detailLabel
         
-        //images 
+//        cardView.rightImages = makeAnImageArray(tempF!)
+        //images
         let img1: UIImageView = UIImageView()
         img1.image = UIImage(imageLiteral: "ic_favorite_white")
         
         let img2: UIImageView = UIImageView()
         img2.image = UIImage(imageLiteral: "ic_star_white")
-        cardView.rightImages = [img1, img2]
+
+        cardView.rightImages = makeAnImageArray(tempF!)
         
         return cardView
  
+    }
+    
+    
+    func makeAnImageArray(temp: Int) -> Array<UIImageView> {
+        //images
+        let skates: UIImageView = UIImageView()
+        skates.image = UIImage(imageLiteral: "skates")
+        
+        let coat: UIImageView = UIImageView()
+        coat.image = UIImage(imageLiteral: "coat")
+        
+        let bike: UIImageView = UIImageView()
+        bike.image = UIImage(imageLiteral: "bike")
+        
+        let hat: UIImageView = UIImageView()
+        hat.image = UIImage(imageLiteral: "hat")
+        
+        let mittens: UIImageView = UIImageView()
+        mittens.image = UIImage(imageLiteral: "mitten")
+        
+        let scarf: UIImageView = UIImageView()
+        scarf.image = UIImage(imageLiteral: "scarf")
+        
+        var imageArray = [UIImageView]()
+        
+        if iceSkatingRange.contains(temp) {
+            print("you can go iceskating!")
+            imageArray.append(skates)
+        }
+        
+        if temp < coatMaximum {
+            print("you should wear a coat")
+            imageArray.append(coat)
+        }
+        
+        if temp < scarfAndGlovesMaximum {
+            print("you should wear a scarf and gloves")
+            imageArray.append(scarf)
+            imageArray.append(mittens)
+        }
+        
+        if bikeRange.contains(temp) {
+            print("you should go on a bike ride today")
+            imageArray.append(bike)
+        }
+        
+        return imageArray
+        
     }
     
     func createNavBar() -> NavigationBarView {
