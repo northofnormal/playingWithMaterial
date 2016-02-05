@@ -14,6 +14,7 @@ import UIKit
 class ViewController: UIViewController {
     
     let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/MI/Detroit.json"
+//    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/lebanon/beirut.json
     var city: String?
     var weatherDescription: String?
     var tempF: Int?
@@ -31,6 +32,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let navBarView = createNavBar()
+        view.addSubview(navBarView)
+        navBarView.translatesAutoresizingMaskIntoConstraints = false
+        MaterialLayout.alignFromTop(view, child: navBarView)
+        MaterialLayout.alignToParentHorizontally(view, child: navBarView)
+        MaterialLayout.height(view, child: navBarView, height: 70)
+        
         makeTheCall()
         
     }
@@ -38,12 +46,7 @@ class ViewController: UIViewController {
     func makeSomeCards() {
         let cardview = createCardView()
         
-        let navBarView = createNavBar()
-        view.addSubview(navBarView)
-        navBarView.translatesAutoresizingMaskIntoConstraints = false
-        MaterialLayout.alignFromTop(view, child: navBarView)
-        MaterialLayout.alignToParentHorizontally(view, child: navBarView)
-        MaterialLayout.height(view, child: navBarView, height: 70)
+        
 
         
         view.addSubview(cardview)
@@ -97,30 +100,16 @@ class ViewController: UIViewController {
         
         // title label
         let titleLabel: UILabel = UILabel()
-        titleLabel.text = weatherDescription
-        
+        if let city = city, tempF = tempF, weatherDescription = weatherDescription {
+            titleLabel.text = "\(city): \(tempF)° and \(weatherDescription)"
+        }
         titleLabel.textColor = MaterialColor.blue.darken1
         titleLabel.font = RobotoFont.mediumWithSize(20)
         cardView.titleLabel = titleLabel
-        
-        // Detail label.
-        let detailLabel: UILabel = UILabel()
-        detailLabel.text = tempStringF
-        detailLabel.numberOfLines = 0
-        cardView.detailLabel = detailLabel
-        
-//        cardView.rightImages = makeAnImageArray(tempF!)
-        //images
-        let img1: UIImageView = UIImageView()
-        img1.image = UIImage(imageLiteral: "ic_favorite_white")
-        
-        let img2: UIImageView = UIImageView()
-        img2.image = UIImage(imageLiteral: "ic_star_white")
-
+       
         cardView.rightImages = makeAnImageArray(tempF!)
         
         return cardView
- 
     }
     
     
@@ -179,7 +168,7 @@ class ViewController: UIViewController {
         
         // Title label.
         let titleLabel: UILabel = UILabel()
-        titleLabel.text = city
+        titleLabel.text = "Weather"
         titleLabel.textAlignment = .Left
         titleLabel.textColor = MaterialColor.white
         titleLabel.font = RobotoFont.regularWithSize(20)
