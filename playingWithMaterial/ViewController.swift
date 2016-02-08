@@ -13,9 +13,15 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/MI/Detroit.json"
-//    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/AK/Deadhorse.json"
-//    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/lebanon/beirut.json"
+    func arrayOfEndpoints() -> [URLStringConvertible] {
+        let firstEndpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/MI/Detroit.json"
+        let secondEndpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/AK/Deadhorse.json"
+        let thirdEndpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/australia/sydney.json"
+        
+        let endpointsArray: [URLStringConvertible] = [firstEndpoint, secondEndpoint, thirdEndpoint]
+        
+        return endpointsArray
+    }
     
     struct location {
         var city: String?
@@ -43,11 +49,14 @@ class ViewController: UIViewController {
         MaterialLayout.alignToParentHorizontally(view, child: navBarView)
         MaterialLayout.height(view, child: navBarView, height: 70)
         
-        makeTheCall()
+        for endpoint in arrayOfEndpoints() {
+            makeTheCall(endpoint)
+        }
+
         
     }
     
-    func makeTheCall() {
+    func makeTheCall(endpoint: URLStringConvertible) {
         Alamofire.request(.GET, endpoint).responseJSON { response in
             
             var currentLocation: location = location()
@@ -80,7 +89,6 @@ class ViewController: UIViewController {
                 
             }
             
-//            self.makeSomeCards()
             self.createCardView(currentLocation)
         }
  
@@ -110,8 +118,6 @@ class ViewController: UIViewController {
         cardView.detailLabel = detailLabel
        
         cardView.rightImages = makeAnImageArray(location.tempF!)
-        
-//        return cardView
         
         view.addSubview(cardView)
         cardView.translatesAutoresizingMaskIntoConstraints = false
