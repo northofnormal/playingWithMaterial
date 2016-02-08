@@ -17,14 +17,15 @@ class ViewController: UIViewController {
 //    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/AK/Deadhorse.json"
 //    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/lebanon/beirut.json"
     
+    struct location {
+        var city: String?
+        var weatherDescription: String?
+        var tempF: Int?
+        var tempStringF: String?
+        var windMPH:Int?
+    }
     
-    var city: String?
-    var weatherDescription: String?
-    var tempF: Int?
-    var tempStringF: String?
-    var windMPH:Int?
-    
-    // conditions constants 
+    // conditions constants
     let iceSkatingRange: [Int] = Array(20...40)
     let coatMaximum: Int = 40
     let scarfAndGlovesMaximum: Int = 35
@@ -46,56 +47,46 @@ class ViewController: UIViewController {
         
     }
     
-    func makeSomeCards() {
-        let cardview = createCardView()
-        
-        
-
-        
-        view.addSubview(cardview)
-        cardview.translatesAutoresizingMaskIntoConstraints = false
-        MaterialLayout.alignFromTop(view, child: cardview, top: 100)
-        MaterialLayout.alignToParentHorizontally(view, child: cardview, left: 20, right: 20)
-
-    }
-    
     func makeTheCall() {
         Alamofire.request(.GET, endpoint).responseJSON { response in
             
+            var currentLocation: location = location()
             if let currentObservationDictionary = response.result.value?["current_observation"] {
+                
                 if let displayLocationDictionary = currentObservationDictionary?["display_location"] {
                     
                     if let city = displayLocationDictionary?["city"] as? String {
                         print("City: \(city)")
-                        self.city = city
+                        currentLocation.city = city
                     }
                     
                     if let weatherDescription =  currentObservationDictionary?["weather"] as? String {
                         print("Weather: \(weatherDescription)")
-                        self.weatherDescription = weatherDescription
+                        currentLocation.weatherDescription = weatherDescription
                     }
                     
                     if let tempF = currentObservationDictionary?["temp_f"] as? Int {
                         print("Temp: \(tempF)")
-                        self.tempF = tempF
-                        self.tempStringF = "\(tempF)"
+                        currentLocation.tempF = tempF
+                        currentLocation.tempStringF = "\(tempF)"
                     }
                     
                     if let windMPH = currentObservationDictionary?["wind_gust_mph"] as? Int {
                         print("wind speed: \(windMPH)")
-                        self.windMPH = windMPH
+                        currentLocation.windMPH = windMPH
                     }
                     
                 }
                 
             }
             
-            self.makeSomeCards()
+//            self.makeSomeCards()
+            self.createCardView(currentLocation)
         }
  
     }
     
-    func createCardView() -> IconCardView {
+    func createCardView(location: ViewController.location) {
         let cardView: IconCardView = IconCardView()
         
         cardView.backgroundColor = MaterialColor.grey.lighten3
@@ -103,7 +94,7 @@ class ViewController: UIViewController {
         
         // title label
         let titleLabel: UILabel = UILabel()
-        if let city = city {
+        if let city = location.city {
             titleLabel.text = "\(city):"
         }
         titleLabel.textColor = MaterialColor.blue.darken1
@@ -112,15 +103,20 @@ class ViewController: UIViewController {
         
         // detail label
         let detailLabel = UILabel()
-        if let tempF = tempF, weatherDescription = weatherDescription {
+        if let tempF = location.tempF, weatherDescription = location.weatherDescription {
             detailLabel.text = "\(tempF)° and \(weatherDescription)"
         }
         detailLabel.numberOfLines = 0
         cardView.detailLabel = detailLabel
        
-        cardView.rightImages = makeAnImageArray(tempF!)
+        cardView.rightImages = makeAnImageArray(location.tempF!)
         
-        return cardView
+//        return cardView
+        
+        view.addSubview(cardView)
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        MaterialLayout.alignFromTop(view, child: cardView, top: 100)
+        MaterialLayout.alignToParentHorizontally(view, child: cardView, left: 20, right: 20)
     }
     
     
