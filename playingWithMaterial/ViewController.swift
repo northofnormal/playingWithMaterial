@@ -14,7 +14,10 @@ import UIKit
 class ViewController: UIViewController {
     
     let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/MI/Detroit.json"
-//    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/lebanon/beirut.json
+//    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/AK/Deadhorse.json"
+//    let endpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/lebanon/beirut.json"
+    
+    
     var city: String?
     var weatherDescription: String?
     var tempF: Int?
@@ -100,12 +103,20 @@ class ViewController: UIViewController {
         
         // title label
         let titleLabel: UILabel = UILabel()
-        if let city = city, tempF = tempF, weatherDescription = weatherDescription {
-            titleLabel.text = "\(city): \(tempF)° and \(weatherDescription)"
+        if let city = city {
+            titleLabel.text = "\(city):"
         }
         titleLabel.textColor = MaterialColor.blue.darken1
         titleLabel.font = RobotoFont.mediumWithSize(20)
         cardView.titleLabel = titleLabel
+        
+        // detail label
+        let detailLabel = UILabel()
+        if let tempF = tempF, weatherDescription = weatherDescription {
+            detailLabel.text = "\(tempF)° and \(weatherDescription)"
+        }
+        detailLabel.numberOfLines = 0
+        cardView.detailLabel = detailLabel
        
         cardView.rightImages = makeAnImageArray(tempF!)
         

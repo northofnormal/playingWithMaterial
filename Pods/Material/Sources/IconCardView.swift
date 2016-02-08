@@ -125,6 +125,39 @@ public class IconCardView : MaterialPulseView {
     }
     
     /**
+     :name: leftImages
+     */
+    public var leftImages: Array<UIImageView>? {
+        didSet {
+            if let v = leftImages {
+                for i in v {
+                    i.translatesAutoresizingMaskIntoConstraints = false
+                }
+            }
+            reloadView()
+        }
+    }
+    
+    /**
+     :name:	leftImagesInsets
+     */
+    public var leftImagesInsetPreset: MaterialEdgeInsetPreset = .None {
+        didSet {
+            leftImagesInset = MaterialEdgeInsetPresetToValue(leftImagesInsetPreset)
+        }
+    }
+    
+    
+    /**
+     :name:	leftImagesInset
+     */
+    public var leftImagesInset: UIEdgeInsets = MaterialEdgeInsetPresetToValue(.None) {
+        didSet {
+            reloadView()
+        }
+    }
+    
+    /**
      :name: rightImages
      */
     public var rightImages: Array<UIImageView>? {
@@ -233,6 +266,33 @@ public class IconCardView : MaterialPulseView {
             
             MaterialLayout.alignToParentHorizontally(self, child: v, left: contentInset.left + detailLabelInset.left, right: contentInset.right + detailLabelInset.right)
         }
+        
+        // leftImages
+        if let v = leftImages {
+            if 0 < v.count {
+                var h: String = "H:|"
+                var d: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+                var i: Int = 0
+                for b in v {
+                    let k: String = "b\(i)"
+                    
+                    d[k] = b
+                    
+                    if 0 == i++ {
+                        h += "-(left)-"
+                    } else {
+                        h += "-(left_right)-"
+                    }
+                    
+                    h += "[\(k)]"
+                    
+                    addSubview(b)
+                    MaterialLayout.alignFromBottom(self, child: b, bottom: contentInset.bottom + leftImagesInset.bottom)
+                }
+                
+                addConstraints(MaterialLayout.constraint(h, options: [], metrics: ["left" : contentInset.left + leftImagesInset.left, "left_right" : leftImagesInset.left + leftImagesInset.right], views: d))
+            }
+        }
 
         // rightImages
         if let v = rightImages {
@@ -262,7 +322,12 @@ public class IconCardView : MaterialPulseView {
             }
         }
         
-        if 0 < rightImages?.count {
+        if 0 < leftImages?.count {
+            verticalFormat += "-(insetC)-[button]"
+            views["button"] = leftImages![0]
+            metrics["insetC"] = leftImagesInset.top
+            metrics["insetBottom"] = contentInset.bottom + leftImagesInset.bottom
+        } else if 0 < rightImages?.count {
             verticalFormat += "-(insetC)-[button]"
             views["button"] = rightImages![0]
             metrics["insetC"] = rightImagesInset.top
