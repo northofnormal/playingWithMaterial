@@ -52,7 +52,8 @@ class ViewController: UIViewController {
         MaterialLayout.height(view, child: navBarView, height: 70)
         
         for endpoint in arrayOfEndpoints() {
-            makeTheCall(endpoint)
+//            makeTheCall(endpoint)
+            makeTheSwiftyCall(endpoint)
         }
         
 //        placeCardViews(cardViewArray)
