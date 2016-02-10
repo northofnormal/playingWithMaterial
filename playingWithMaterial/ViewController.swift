@@ -13,6 +13,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var cardViewArray = [IconCardView]()
+    
     func arrayOfEndpoints() -> [URLStringConvertible] {
         let firstEndpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/MI/Detroit.json"
         let secondEndpoint: URLStringConvertible = "http://api.wunderground.com/api/b193c8afeeecdbb2/conditions/q/AK/Deadhorse.json"
@@ -52,11 +54,14 @@ class ViewController: UIViewController {
         for endpoint in arrayOfEndpoints() {
             makeTheCall(endpoint)
         }
-
         
+//        placeCardViews(cardViewArray)
     }
     
     func makeTheCall(endpoint: URLStringConvertible) {
+        let parser = JSONParser()
+        print(parser.pinged())
+        
         Alamofire.request(.GET, endpoint).responseJSON { response in
             
             var currentLocation: location = location()
@@ -90,11 +95,12 @@ class ViewController: UIViewController {
             }
             
             self.createCardView(currentLocation)
+//            self.cardViewArray.append(self.createCardView(currentLocation))
         }
  
     }
     
-    func createCardView(location: ViewController.location) {
+    func createCardView(location: ViewController.location) -> IconCardView {
         let cardView: IconCardView = IconCardView()
         
         cardView.backgroundColor = MaterialColor.grey.lighten3
@@ -119,6 +125,25 @@ class ViewController: UIViewController {
        
         cardView.rightImages = makeAnImageArray(location.tempF!)
         
+        placeCardView(cardView)
+        return cardView
+    }
+    
+    func placeCardViews(cardViewArray: [IconCardView]) {
+        for cardView in cardViewArray {
+            view.addSubview(cardView)
+            cardView.translatesAutoresizingMaskIntoConstraints = false
+            
+            if let topThing: Int = cardViewArray.indexOf(cardView) {
+                let topThingFloat: CGFloat = CGFloat(topThing)
+                MaterialLayout.alignFromTop(view, child: cardView, top: (topThingFloat + 1) * 100 )
+            }
+            
+            MaterialLayout.alignToParentHorizontally(view, child: cardView, left: 20, right: 20)
+        }
+    }
+    
+    func placeCardView(cardView: IconCardView) {
         view.addSubview(cardView)
         cardView.translatesAutoresizingMaskIntoConstraints = false
         MaterialLayout.alignFromTop(view, child: cardView, top: 100)
@@ -151,6 +176,11 @@ class ViewController: UIViewController {
         if iceSkatingRange.contains(temp) {
             print("you can go iceskating!")
             imageArray.append(skates)
+        }
+        
+        if temp < hatMaximum {
+            print("you should wear a hat")
+            imageArray.append(hat)
         }
         
         if temp < coatMaximum {
