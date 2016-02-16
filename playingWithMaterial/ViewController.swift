@@ -59,42 +59,38 @@ class ViewController: UIViewController {
     }
     
     func makeTheCall(endpoint: URLStringConvertible) {
-        let parser = JSONParser()
-        print(parser.pinged())
         
         Alamofire.request(.GET, endpoint).responseJSON { response in
             
-            var currentLocation: location = parser.parseDictionary(response)
-            
-//            var currentLocation: location = location()
-//            if let currentObservationDictionary = response.result.value?["current_observation"] {
-//                
-//                if let displayLocationDictionary = currentObservationDictionary?["display_location"] {
-//                    
-//                    if let city = displayLocationDictionary?["city"] as? String {
-//                        print("City: \(city)")
-//                        currentLocation.city = city
-//                    }
-//                    
-//                    if let weatherDescription =  currentObservationDictionary?["weather"] as? String {
-//                        print("Weather: \(weatherDescription)")
-//                        currentLocation.weatherDescription = weatherDescription
-//                    }
-//                    
-//                    if let tempF = currentObservationDictionary?["temp_f"] as? Int {
-//                        print("Temp: \(tempF)")
-//                        currentLocation.tempF = tempF
-//                        currentLocation.tempStringF = "\(tempF)"
-//                    }
-//                    
-//                    if let windMPH = currentObservationDictionary?["wind_gust_mph"] as? Int {
-//                        print("wind speed: \(windMPH)")
-//                        currentLocation.windMPH = windMPH
-//                    }
-//                    
-//                }
-//                
-//            }
+            var currentLocation: location = location()
+            if let currentObservationDictionary = response.result.value?["current_observation"] {
+                
+                if let displayLocationDictionary = currentObservationDictionary?["display_location"] {
+                    
+                    if let city = displayLocationDictionary?["city"] as? String {
+                        print("City: \(city)")
+                        currentLocation.city = city
+                    }
+                    
+                    if let weatherDescription =  currentObservationDictionary?["weather"] as? String {
+                        print("Weather: \(weatherDescription)")
+                        currentLocation.weatherDescription = weatherDescription
+                    }
+                    
+                    if let tempF = currentObservationDictionary?["temp_f"] as? Int {
+                        print("Temp: \(tempF)")
+                        currentLocation.tempF = tempF
+                        currentLocation.tempStringF = "\(tempF)"
+                    }
+                    
+                    if let windMPH = currentObservationDictionary?["wind_gust_mph"] as? Int {
+                        print("wind speed: \(windMPH)")
+                        currentLocation.windMPH = windMPH
+                    }
+                    
+                }
+                
+            }
             
             self.createCardView(currentLocation)
 //            self.cardViewArray.append(self.createCardView(currentLocation))
